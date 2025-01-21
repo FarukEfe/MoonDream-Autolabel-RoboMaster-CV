@@ -38,5 +38,5 @@ def chop_video(video_path: str, output_dir: str, step: int = 20):
 
     video_capture.release()
 
-chop_video('./videos/macu_vs_uofa.mp4', './frames')
+chop_video('./videos/macu_vs_uofa.mp4', './frames/macu_vs_uofa')
 

@@ -1,3 +1,5 @@
 .env
 frames
 videos
+
+__pycache__
