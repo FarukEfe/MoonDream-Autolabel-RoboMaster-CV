@@ -1,6 +1,7 @@
 .env
 frames
 videos
+dataset
 
 __pycache__
 
