@@ -15,12 +15,13 @@ def open_img(dir):
     return image, w, h
 
 # Get center points of object "Number on Robot"
-def get_label_center(img, obj_name):
-    points = model.point(img, obj_name)["points"]
-    cls = model.query(img, 'Is the robot red or blue?')
-    return points
+def get_annotation(img):
+    points = model.point(img, "Number on robot")["points"]
+    #cls = model.query(img, 'Is the robot red or blue? Return answer in lowercase.')
+    return points#, cls
 
 # Output the results (moondream returns normalized coordinates)
+# FIX: THIS DOESN'T RETURN ALL POINT PREDICTIONS, JUST THE LAST ONE SO FIX IT!
 def compute_pixel_coords(points, w, h):
     norm_x, norm_y = 0, 0
     acc_x, acc_y = 0, 0
@@ -53,7 +54,7 @@ def user_verify(image, acc_x, acc_y) -> int:
             exit(0)
 
 # Save in storage
-def save_with_labels(img, acc_x, acc_y, dest):
+def save_with_labels(img, acc_x, acc_y, dest: str):
     '''
     path_blue = os.path.join(dest, 'blue')
     path_red = os.path.join(dest, 'red')
@@ -62,17 +63,21 @@ def save_with_labels(img, acc_x, acc_y, dest):
     if not os.path.exists(path_blue): os.mkdir(path_blue)
     if not os.path.exists(path_red): os.mkdir(path_red)
     '''
-
-
+    img.save(dest)
 
 pull_dest = './frames/macu_vs_uofa/fps'
 save_dest = './dataset/sentry'
 # Get all .jpg files
 urls = [os.path.join(pull_dest, f) for f in os.listdir(pull_dest) if f.lower().endswith('.jpg')]
+f = open(save_dest + "annotation.txt", "w")
 for url in urls:
     img, w, h = open_img(url)
-    pts = get_label_center(img, "Number on Robot")
+    pts = get_annotation(img)
     acc_x, acc_y = compute_pixel_coords(pts, w, h)
     save = user_verify(img, acc_x, acc_y)
     if not save: continue # Ignore if not verified by the user
     save_with_labels(img, acc_x, acc_y, save_dest)
+    for pt in pts:
+        f.write(f"{url.split('/')[-1]},{pt['x']},{pt['y']},{acc_x},{acc_y}")
+f.close()
+
