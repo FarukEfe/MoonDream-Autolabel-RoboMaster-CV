@@ -26,7 +26,7 @@ if __name__ == '__main__':
     parser.add_argument('-u', '--url', type=str, nargs='*', help='Manual entry for video url(s)')
     #parser.add_argument('-f', '--file', type=str, nargs='?', help='File directory listing downloads (has to be txt for simplicity)')
     args = parser.parse_args()
-    # Handle output path
+    # Error Handling
     output_dir = os.path.abspath(args.output)
     if not os.path.exists(output_dir):
         print("Output folder directory couldn't be found, exiting...", end='\r')

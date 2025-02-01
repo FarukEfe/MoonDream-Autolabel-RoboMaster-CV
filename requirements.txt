@@ -1,0 +1,11 @@
+numpy
+yt_dlp
+opencv-python
+timm
+moondream
+torch
+torchvision
+transformers
+einops
+pillow
+python-dotenv

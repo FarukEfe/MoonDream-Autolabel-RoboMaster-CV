@@ -1,8 +1,12 @@
+# Env Variables
+venv
 .env
-frames
+# Media
 videos
 dataset
-
+frames
+# Other
+archive
 __pycache__
 
 PERSONAL.py
